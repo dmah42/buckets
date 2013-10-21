@@ -1,6 +1,6 @@
+#include <algorithm>
 #include <cstdlib>
 #include <iostream>
-#include <list>
 #include <set>
 #include <vector>
 
@@ -74,7 +74,8 @@ std::vector<State*> GetChildStates(const State& state) {
   return child_states;
 }
 
-bool Run(int capacity_a, int capacity_b, int target) {
+std::vector<std::pair<int, int> > Run(
+    int capacity_a, int capacity_b, int target) {
   buckets::capacity_a = capacity_a;
   buckets::capacity_b = capacity_b;
   buckets::target = target;
@@ -90,16 +91,13 @@ bool Run(int capacity_a, int capacity_b, int target) {
     for (size_t i = 0; i < child_states.size(); ++i) {
       if (state->a() + state->b() == target) {
         // print path
-        std::list<const State*> path;
+        std::vector<std::pair<int, int> > path;
         while (state != NULL) {
-          path.push_front(state);
+          path.push_back(std::pair<int, int>(state->a(), state->b()));
           state = state->parent();
         }
-        for (std::list<const State*>::const_iterator path_it = path.begin();
-             path_it != path.end(); ++path_it) {
-          std::cout << (*path_it)->a() << " " << (*path_it)->b() << "\n";
-        }
-        return true;
+        std::reverse(path.begin(), path.end());
+        return path;
       }
       if (visited_states.count(*child_states[i]) == 0) {
         child_states[i]->set_parent(state);
@@ -108,8 +106,7 @@ bool Run(int capacity_a, int capacity_b, int target) {
       }
     }
   }
-  std::cout << "Failed to find a solution\n";
-  return false;
+  return std::vector<std::pair<int, int> >();
 }
 }  // namespace buckets
 

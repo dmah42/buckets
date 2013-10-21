@@ -26,6 +26,7 @@
 
 #include <cstdio>
 #include <string>
+#include <sstream>
 
 #include "buckets.h"
 #include "ppapi/cpp/instance.h"
@@ -70,7 +71,16 @@ class BucketsInstance : public pp::Instance {
     int capacity_a = strtoul("5", NULL, 10);
     int capacity_b = strtoul("3", NULL, 10);
     int target = strtoul("7", NULL, 10);
-    PostMessage(pp::Var(buckets::Run(capacity_a, capacity_b, target) ? "solution" : "no solution"));
+    std::vector<std::pair<int, int> > solution =
+        buckets::Run(capacity_a, capacity_b, target);
+    std::stringstream reply;
+    reply << "[";
+    for (std::vector<std::pair<int, int> >::const_iterator it = solution.begin();
+         it != solution.end(); ++it) {
+      reply << it->first << ":" << it->second << ",";
+    }
+    reply << "]";
+    PostMessage(pp::Var(reply.str()));
   }
 };
 

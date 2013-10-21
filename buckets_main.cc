@@ -12,5 +12,11 @@ int main(int argc, const char* argv[]) {
   int capacity_a = strtoul(argv[1], NULL, 10);
   int capacity_b = strtoul(argv[2], NULL, 10);
   int target = strtoul(argv[3], NULL, 10);
-  return buckets::Run(capacity_a, capacity_b, target) ? 0 : 1;
+  std::vector<std::pair<int, int> > solution = buckets::Run(
+      capacity_a, capacity_b, target);
+  for (std::vector<std::pair<int, int> >::const_iterator it = solution.begin();
+       it != solution.end(); ++it) {
+    std::cout << it->first << " " << it->second << "\n";
+  }
+  return solution.empty() ? 1 : 0;
 }
