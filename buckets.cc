@@ -87,7 +87,7 @@ int main(int argc, const char* argv[]) {
     const State* state = states.back();
     states.pop_back();
     std::vector<State*> child_states = GetChildStates(*state);
-    for (int i = 0; i < child_states.size(); ++i) {
+    for (size_t i = 0; i < child_states.size(); ++i) {
       if (state->a + state->b == g_target) {
         // print path
         std::list<const State*> path;
