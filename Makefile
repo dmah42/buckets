@@ -30,11 +30,10 @@ ARM_CXX:=$(ARM_TC_PATH)/bin/arm-nacl-g++
 
 # Project Build flags
 WARNINGS:=-Wno-long-long -Wall -Wswitch-enum -pedantic -Werror
-CXXFLAGS:=-std=gnu++98 $(WARNINGS)
-CXXFLAGS:=$(CXXFLAGS) -I.
+CXXFLAGS:=$(WARNINGS) -I.
 LDFLAGS:=
 
-NACL_CXXFLAGS:=$(CXXFLAGS) -pthread -I$(NACL_SDK_ROOT)/include
+NACL_CXXFLAGS:=$(CXXFLAGS) -pthread -std=gnu++98 -I$(NACL_SDK_ROOT)/include
 NACL_LDFLAGS:=$(LDFLAGS) -lppapi_cpp -lppapi
 
 NACL_LDFLAGS_X86_32:=-L$(NACL_SDK_ROOT)/lib/newlib_x86_32/Debug
@@ -67,7 +66,7 @@ $(OBJS) : %.o : %.cc $(THIS_MAKEFILE)
 	$(CXX) -o $@ -c $< -O0 -g $(CXXFLAGS)
 
 $(PROJECT) : $(OBJS)
-	$(CXX) -o $@ $^ -m32 -O0 -g $(CXXFLAGS) $(LDFLAGS)
+	$(CXX) -o $@ $^ -O0 -g $(CXXFLAGS) $(LDFLAGS)
 
 # Define 32 bit compile and link rules for main application
 x86_32_OBJS:=$(patsubst %.cc,%_32.o,$(NACL_CXX_SOURCES))
