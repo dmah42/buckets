@@ -74,6 +74,8 @@ std::vector<State*> GetChildStates(const State& state) {
   return child_states;
 }
 
+// This is using a depth-first search which will not return the shortest
+// solution.
 std::vector<std::pair<int, int> > Run(
     int capacity_a, int capacity_b, int target) {
   buckets::capacity_a = capacity_a;
@@ -87,18 +89,18 @@ std::vector<std::pair<int, int> > Run(
   while (states.size() > 0) {
     const State* state = states.back();
     states.pop_back();
+    if (state->a() + state->b() == target) {
+      // print path
+      std::vector<std::pair<int, int> > path;
+      while (state != NULL) {
+        path.push_back(std::pair<int, int>(state->a(), state->b()));
+        state = state->parent();
+      }
+      std::reverse(path.begin(), path.end());
+      return path;
+    }
     std::vector<State*> child_states = GetChildStates(*state);
     for (size_t i = 0; i < child_states.size(); ++i) {
-      if (state->a() + state->b() == target) {
-        // print path
-        std::vector<std::pair<int, int> > path;
-        while (state != NULL) {
-          path.push_back(std::pair<int, int>(state->a(), state->b()));
-          state = state->parent();
-        }
-        std::reverse(path.begin(), path.end());
-        return path;
-      }
       if (visited_states.count(*child_states[i]) == 0) {
         child_states[i]->set_parent(state);
         states.push_back(child_states[i]);
