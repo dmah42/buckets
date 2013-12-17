@@ -5,7 +5,7 @@
 
 int main(int argc, const char* argv[]) {
   if (argc != 4) {
-    std::cerr << "Usage: " << argv[0] << " <capacity-a> <capacity-b> <target>";
+    std::cerr << "Usage: " << argv[0] << " <capacityA> <capacityB> <target>\n";
     return 1;
   }
 
@@ -16,7 +16,8 @@ int main(int argc, const char* argv[]) {
       capacity_a, capacity_b, target);
   for (std::vector<std::pair<int, int> >::const_iterator it = solution.begin();
        it != solution.end(); ++it) {
-    std::cout << it->first << " " << it->second << "\n";
+    std::cout << it->first << " " << it->second << " = "
+              << it->first + it->second << "\n";
   }
   return solution.empty() ? 1 : 0;
 }
