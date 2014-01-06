@@ -86,7 +86,7 @@ std::vector<std::pair<int, int> > Run(
   std::set<State> visited_states;
 
   states.push_back(new State(0,0));
-  while (states.size() > 0) {
+  while (!states.empty()) {
     const State* state = states.back();
     states.pop_back();
     if (state->a() + state->b() == target) {
